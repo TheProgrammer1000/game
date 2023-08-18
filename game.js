@@ -72,6 +72,8 @@ document.addEventListener('keydown', (e) => {
   // clear canvas screen
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+  detectionColide(userPlayer.x_pos, userPlayer.y_pos);
+
   // making the user move left, right, up and down
   if (e.keyCode === 37) {
     // X
@@ -138,8 +140,27 @@ function draw() {
   ctx.stroke();
 }
 
+// fungerar!
+function detectionColide() {
+  if(   userPlayer.x_pos_to_right_most >= coin.x_pos_to_left_most &&
+        userPlayer.y_pos_to_upper_most <= coin.y_pos_to_lower_most &&  
+        userPlayer.y_pos_to_lower_most >= coin.y_pos_to_upper_most &&
+        userPlayer.x_pos_to_left_most <= coin.x_pos_to_right_most
+    ) {
+    //userPlayer.y_pos = userPlayer.y_pos
+      console.log("Stanna");
+  }
+  /*
+  else if(userPlayer.x_pos_to_left_most <= coin.x_pos_to_right_most && userPlayer.y_pos_to_upper_most <= coin.y_pos_to_lower_most && userPlayer.y_pos_to_lower_most >= coin.y_pos_to_upper_most) {
+    console.log("STANNA!");
+  }
+  */
+}
+
+
 function loop() {
   draw();
+  detectionColide();
   window.requestAnimationFrame(loop);
 }
 
