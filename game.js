@@ -9,7 +9,6 @@ let ctx = canvas.getContext('2d');
 
 let colide = false;
 
-let userPlayerTempValue;
 
 userPlayer = {
   x_pos: 200,
@@ -32,8 +31,8 @@ coin = {
   x_pos: 600,
   y_pos: 400,
 
-  width: 10,
-  height: 10
+  width: 15,
+  height: 15
 };
 
 coin.x_pos_to_right_most = coin.x_pos + coin.width;
@@ -76,52 +75,16 @@ function charactherMove(e) {
 
  
 
-  if(   userPlayer.x_pos_to_right_most > coin.x_pos_to_left_most &&
+  if(  userPlayer.x_pos_to_right_most > coin.x_pos_to_left_most &&
     userPlayer.y_pos_to_upper_most < coin.y_pos_to_lower_most &&  
     userPlayer.y_pos_to_lower_most > coin.y_pos_to_upper_most &&
     userPlayer.x_pos_to_left_most < coin.x_pos_to_right_most
   ) {
-  
-    colide = true
+    console.log("HITTED");
 
-  
-
-  /*
-  ctx.beginPath();
-  ctx.fillStyle = 'green';
-  ctx.fillRect(coin.x.pos, coin.y_pos, coin.width, coin.height);
-  ctx.stroke();
-
-*/
-  /*
-  if(
-      userPlayer.x_pos_to_right_most < coin.x_pos_to_right_most &&
-      userPlayer.x_pos_to_right_most >= coin.x_pos_to_left_most
-    
-    ) {
-    // När denna är true är från vänster till höger!
-    leftColide = true;
-    console.log("STANNANANSND")
-  }
-  */
-    
   }
 
 
-
-  if(colide === true) {
-    let x = Math.floor((Math.random() * 800) + 1);
-    let y = Math.floor((Math.random() * 800) + 1);
-  
-
-      coin.height = 0
-      coin.width = 0
-
-      coin.x_pos = x
-      coin.y_pos = y
-    
-    colide = false;
-  }
 
 
   
@@ -150,51 +113,22 @@ function charactherMove(e) {
   } else if (e.keyCode === 38) {
     // arrow up
 
-    /*
-    if(detectionColide() === true) {
-      userPlayer.y_pos = userPlayer.y_pos;    
-    } else {
-      userPlayer.y_pos -= userPlayer.speed;
-    }
-*/
     userPlayer.y_pos -= userPlayer.speed;
     userPlayer.y_pos_to_upper_most = userPlayer.y_pos;
     userPlayer.y_pos_to_lower_most = userPlayer.y_pos + userPlayer.height;
   } else if (e.keyCode === 39) {
     // X
     // arrow right
-/*
-    if(detectionColide() === true) {
-      userPlayer.x_pos = userPlayer.x_pos;    
-    } else {
-      userPlayer.x_pos += userPlayer.speed;
-    }
-*/
-   
+
 
     // checking if leftcolide with ball from the rect right!
    
-   
-   
- 
-    // Här är inte leftColide === true när de är 600 600
-    // Men när bollen kommer 602 då blir den true och kan inte röra mer
 
-    /*
-    if(userPlayer.x_pos_to_right_most < coin.x_pos){ // kolliderar men då stoppar vi det genom denna position
-      userPlayer.x_pos += userPlayer.speed;
-    }
-    else {
-      userPlayer.x_pos = userPlayer.x_pos;
-    }
-
-   */
     
 
    
     userPlayer.x_pos += userPlayer.speed
   
-      //userPlayer.x_pos += userPlayer.speed;
 
     userPlayer.x_pos_to_right_most = userPlayer.x_pos + userPlayer.width;
     userPlayer.x_pos_to_left_most = userPlayer.x_pos;
@@ -208,20 +142,12 @@ function charactherMove(e) {
     // X
     // arrow down
 
-    /*
-    if(detectionColide() === true) {
-      userPlayer.y_pos = userPlayer.y_pos;    
-    } else {
-      userPlayer.y_pos += userPlayer.speed;
-    }*/
 
     userPlayer.y_pos += userPlayer.speed;
 
     userPlayer.y_pos_to_lower_most = userPlayer.y_pos + userPlayer.height;
     userPlayer.y_pos_to_upper_most = userPlayer.y_pos;
   }
-
-  //console.log(`${e.key}`);
 
   }
 
@@ -232,7 +158,6 @@ window.addEventListener('keydown', (e) => charactherMove(e))
 
 
 function draw() {
-  
 
   XpositionOnCircle.innerText = `X_most to the right of the Rec: ${userPlayer.x_pos_to_right_most}\n X_most to the left of the Rec: ${userPlayer.x_pos_to_left_most}\n\n`;
   YpositionOnCircle.innerText = `Y_most to the upper of the Rec: ${userPlayer.y_pos_to_upper_most}\n Y_most to the lowest of the Rec: ${userPlayer.y_pos_to_lower_most}\n\n`;
@@ -256,46 +181,39 @@ function draw() {
   ctx.stroke();
 }
 
+
 // fungerar!
 function detectionColide() {
-  
-  
+   
   if(   userPlayer.x_pos_to_right_most > coin.x_pos_to_left_most &&
         userPlayer.y_pos_to_upper_most < coin.y_pos_to_lower_most &&  
         userPlayer.y_pos_to_lower_most > coin.y_pos_to_upper_most &&
         userPlayer.x_pos_to_left_most < coin.x_pos_to_right_most
     ) {
-      console.log("Stanna")
-
-
-
-      let x = Math.floor((Math.random() * 800) + 1);
-      let y = Math.floor((Math.random() * 800) + 1);
-
-      coin.x_pos = x;
-      coin.y_pos = y;
-
-      /*
-      if(
-          userPlayer.x_pos_to_right_most < coin.x_pos_to_right_most &&
-          userPlayer.x_pos_to_right_most >= coin.x_pos_to_left_most
-        
-        ) {
-        // När denna är true är från vänster till höger!
-        leftColide = true;
-        console.log("STANNANANSND")
-      }
-      */
-  }
-  //return false 
+    console.log("Collision detected");
+    // Regenerate the coin's position
   
+
+
+    coin.x_pos = Math.floor(Math.random() * (canvasWidth - coin.width));
+    coin.y_pos = Math.floor(Math.random() * (canvasHeight - coin.height));
+    
+    coin.x_pos_to_right_most = coin.x_pos + coin.width;
+    coin.x_pos_to_left_most = coin.x_pos;
+    coin.y_pos_to_upper_most = coin.y_pos;
+    coin.y_pos_to_lower_most = coin.y_pos + coin.height;
+
+  }
 }
 
 
 
+
+
 function loop() {
+  detectionColide()
+  
   draw();
-  //detectionColide()
 
   window.requestAnimationFrame(loop);
 }
