@@ -7,8 +7,7 @@ let coinElement = document.getElementById('coin');
 
 let ctx = canvas.getContext('2d');
 
-let leftColide = false;
-let counterTime = 0
+let colide = false;
 
 let userPlayerTempValue;
 
@@ -72,8 +71,61 @@ ctx.fillStyle = 'green';
 ctx.fillRect(coin.x_pos, coin.y_pos, coin.width, coin.height);
 ctx.stroke();
 
-// update
-document.addEventListener('keydown', (e) => {
+
+function charactherMove(e) {
+
+ 
+
+  if(   userPlayer.x_pos_to_right_most > coin.x_pos_to_left_most &&
+    userPlayer.y_pos_to_upper_most < coin.y_pos_to_lower_most &&  
+    userPlayer.y_pos_to_lower_most > coin.y_pos_to_upper_most &&
+    userPlayer.x_pos_to_left_most < coin.x_pos_to_right_most
+  ) {
+  
+    colide = true
+
+  
+
+  /*
+  ctx.beginPath();
+  ctx.fillStyle = 'green';
+  ctx.fillRect(coin.x.pos, coin.y_pos, coin.width, coin.height);
+  ctx.stroke();
+
+*/
+  /*
+  if(
+      userPlayer.x_pos_to_right_most < coin.x_pos_to_right_most &&
+      userPlayer.x_pos_to_right_most >= coin.x_pos_to_left_most
+    
+    ) {
+    // När denna är true är från vänster till höger!
+    leftColide = true;
+    console.log("STANNANANSND")
+  }
+  */
+    
+  }
+
+
+
+  if(colide === true) {
+    let x = Math.floor((Math.random() * 800) + 1);
+    let y = Math.floor((Math.random() * 800) + 1);
+  
+
+      coin.height = 0
+      coin.width = 0
+
+      coin.x_pos = x
+      coin.y_pos = y
+    
+    colide = false;
+  }
+
+
+  
+  
   // clear canvas screen
   console.log(e.key);
 
@@ -86,23 +138,8 @@ document.addEventListener('keydown', (e) => {
     // X
     // arrow left
 
-    /*
-    if(detectionColide() === true) {
-      userPlayer.x_pos = userPlayer.x_pos;    
-    } else {
-      userPlayer.x_pos -= userPlayer.speed;
-    }
-    */
-    if(
-      userPlayer.x_pos_to_right_most < coin.x_pos_to_right_most &&
-      userPlayer.x_pos_to_right_most >= coin.x_pos_to_left_most
-    
-    ) {
-    // När denna är true är från vänster till höger!
-    leftColide = false;
-    console.log("HÄÄÄÄRR TACK")
-    }
-
+  
+ 
 
     userPlayer.x_pos -= userPlayer.speed;
 
@@ -133,28 +170,13 @@ document.addEventListener('keydown', (e) => {
       userPlayer.x_pos += userPlayer.speed;
     }
 */
-    // can't from right!!!
-
-    //console.log(userPlayer.x_pos_to_right_most >= coin.x_pos)
    
-    // for the x-pos to be right! 
-    if( userPlayer.x_pos_to_right_most < coin.x_pos_to_right_most &&
-      userPlayer.x_pos_to_right_most >= coin.x_pos_to_left_most && counterTime === 0
-    ) {
-      userPlayerTempValue = userPlayer.x_pos
-      counterTime = 1
-    }
 
     // checking if leftcolide with ball from the rect right!
-    if(leftColide === true) {
-      //console.log("Här")
-      userPlayerTempValue = userPlayerTempValue
-
-      userPlayer.x_pos = userPlayerTempValue
-    }
-    else {
-      userPlayer.x_pos += userPlayer.speed
-    }
+   
+   
+   
+ 
     // Här är inte leftColide === true när de är 600 600
     // Men när bollen kommer 602 då blir den true och kan inte röra mer
 
@@ -170,7 +192,7 @@ document.addEventListener('keydown', (e) => {
     
 
    
-
+    userPlayer.x_pos += userPlayer.speed
   
       //userPlayer.x_pos += userPlayer.speed;
 
@@ -200,7 +222,14 @@ document.addEventListener('keydown', (e) => {
   }
 
   //console.log(`${e.key}`);
-});
+
+  }
+
+
+
+window.addEventListener('keydown', (e) => charactherMove(e))
+// update
+
 
 function draw() {
   
@@ -229,12 +258,24 @@ function draw() {
 
 // fungerar!
 function detectionColide() {
+  
+  
   if(   userPlayer.x_pos_to_right_most > coin.x_pos_to_left_most &&
         userPlayer.y_pos_to_upper_most < coin.y_pos_to_lower_most &&  
         userPlayer.y_pos_to_lower_most > coin.y_pos_to_upper_most &&
         userPlayer.x_pos_to_left_most < coin.x_pos_to_right_most
     ) {
-      //console.log("Stanna");
+      console.log("Stanna")
+
+
+
+      let x = Math.floor((Math.random() * 800) + 1);
+      let y = Math.floor((Math.random() * 800) + 1);
+
+      coin.x_pos = x;
+      coin.y_pos = y;
+
+      /*
       if(
           userPlayer.x_pos_to_right_most < coin.x_pos_to_right_most &&
           userPlayer.x_pos_to_right_most >= coin.x_pos_to_left_most
@@ -244,15 +285,17 @@ function detectionColide() {
         leftColide = true;
         console.log("STANNANANSND")
       }
+      */
   }
-  //return false  
+  //return false 
+  
 }
 
 
 
 function loop() {
   draw();
-  detectionColide()
+  //detectionColide()
 
   window.requestAnimationFrame(loop);
 }
